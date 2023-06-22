@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Hospital Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+        .img-wrapper {
+            background-image: url("/assets/img/hospital1.jpg");
+            height: 100vh;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .login-form {
+            margin: 9rem auto;
+
+            width: 24rem;
+        }
+
+        .login-form input {
+            width: 100%;
+            margin-top: 1rem;
+            height: 2.5rem;
+            border: none;
+            background-color: rgb(235, 224, 224);
+            border-radius: .4rem;
+        }
+
+        .login-form label {
+            margin-top: 1rem;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .login-form button {
+            width: 30%;
+            margin-top: 2rem;
+            border: none;
+            background-color: blue;
+            height: 2.5rem;
+            color: white;
+            margin: 3rem auto;
+            border-radius: .3rem;
+        }
+
+        .login-form h1 {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6 img-wrapper">
+
+            </div>
+            <div class="col-6 form-wrapper">
+                <div class="login-form d-flex flex-column">
+                    <h1>Hospital Login</h1>
+                    <label>Username</label>
+                    <input type="text" id="husername">
+                    <label for="">Password</label>
+                    <input type="text" id="hpassword">
+                    <button type="button" onclick="hospital_login()">Login</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+</body>
+<script>
+    async function hospital_login() {
+        var username = document.getElementById("husername").value;
+        var password = document.getElementById("hpassword").value;
+
+
+        var url = "/hospital/auth/login"
+        console.log("Hospital Login Triggered")
+        var response = await fetch(url, {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+        var resData = await response.json()
+        console.log(resData)
+        if (resData.status == true && resData.token) {
+            window.location.href = "/"
+        } else {
+            console.log("Wrong Credentials")
+            $('exampleModal').modal('show')
+        }
+
+    }
+
+</script>
+
+</html>
